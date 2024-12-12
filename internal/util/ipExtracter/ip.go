@@ -1,0 +1,15 @@
+package ipExtracter
+
+import (
+	"net"
+	"net/http"
+)
+
+func GetIPAddress(r *http.Request) string {
+	if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
+		return forwarded
+	}
+
+	ip, _, _ := net.SplitHostPort(r.RemoteAddr)
+	return ip
+}
