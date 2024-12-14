@@ -12,10 +12,14 @@ var (
 )
 
 type Config struct {
-	Server     string        `yaml:"server"`
+	Server   string   `yaml:"server"`
+	Auth     Auth     `yaml:"auth"`
+	Postgres Postgres `yaml:"postgres"`
+}
+
+type Auth struct {
 	AccessTTL  time.Duration `yaml:"accessTTL"`
 	RefreshTTL time.Duration `yaml:"refreshTTL"`
-	Postgres   Postgres      `yaml:"postgres"`
 }
 
 func New() *Config {

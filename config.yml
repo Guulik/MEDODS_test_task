@@ -1,6 +1,7 @@
 server: "0.0.0.0:8080"
-accessTTL: 5m
-refreshTTL: 100m
+auth:
+  accessTTL: 5m
+  refreshTTL: 100m
 postgres:
   user: "postgres"
   password: "5379"

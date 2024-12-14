@@ -5,6 +5,7 @@ import (
 	"MEDODS-test/internal/domain/model"
 	"context"
 	"log/slog"
+	"time"
 )
 
 type Service struct {
@@ -20,7 +21,7 @@ type TokenProvider interface {
 	Get(ctx context.Context, userID string) (*model.RefreshTokenDB, error)
 }
 type TokenModifier interface {
-	Insert(ctx context.Context, userID string, tokenHash string, ipAddress string) error
+	Insert(ctx context.Context, userID string, tokenHash string, ipAddress string, expiresAt time.Time) error
 	Delete(ctx context.Context, userID string) error
 }
 

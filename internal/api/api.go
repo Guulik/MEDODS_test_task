@@ -48,7 +48,7 @@ func (a *Api) GetTokens(ctx echo.Context) error {
 
 	tokenPair, err = a.svc.GenerateTokens(context, req.UserGUID, userIp)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+		return err
 	}
 	return ctx.JSON(http.StatusOK, *tokenPair)
 }
@@ -71,9 +71,9 @@ func (a *Api) RefreshTokens(ctx echo.Context) error {
 	}
 	log.Info(sl.Req(req))
 
-	tokenPair, err = a.svc.GenerateTokens(context, req.UserGUID, userIp)
+	tokenPair, err = a.svc.RefreshTokens(context, req.UserGUID, req.RefreshToken, userIp)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+		return err
 	}
 	return ctx.JSON(http.StatusOK, *tokenPair)
 }

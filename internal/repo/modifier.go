@@ -1,19 +1,18 @@
 package repo
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
-//TODO: изменение даты использования токена.
+func (r *Storage) Insert(ctx context.Context, userID string, tokenHash string, ipAddress string, expiresAt time.Time) error {
+	query := `INSERT INTO refresh_token (user_id, token_hash, ip_address, expires_at) 
+              VALUES ($1, $2, $3, $4)`
 
-// TODO: проверить
-func (r *Storage) Insert(ctx context.Context, userID string, tokenHash string, ipAddress string) error {
-	query := `INSERT INTO refresh_token (user_id, refresh_token_hash, ip_address) 
-              VALUES ($1, $2, $3)`
-
-	_, err := r.pool.Exec(ctx, query, userID, tokenHash, ipAddress)
+	_, err := r.pool.Exec(ctx, query, userID, tokenHash, ipAddress, expiresAt)
 	return err
 }
 
-// TODO: проверить
 func (r *Storage) Delete(ctx context.Context, userID string) error {
 	query := `DELETE FROM refresh_token WHERE user_id = $1`
 	_, err := r.pool.Exec(ctx, query, userID)
