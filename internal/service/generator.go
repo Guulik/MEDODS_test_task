@@ -3,12 +3,12 @@ package service
 import (
 	"MEDODS-test/internal/domain/model"
 	sl "MEDODS-test/internal/lib/logger/slog"
-	"MEDODS-test/internal/util/refresher"
 	"context"
 	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
 	"log/slog"
 	"math/rand"
 	"net/http"
@@ -50,7 +50,7 @@ func (s *Service) GenerateTokens(ctx context.Context, userID, ipAddress string) 
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
-	refreshHash, err = refresher.Encrypt(refreshTokenRaw)
+	refreshHash, err = bcrypt.GenerateFromPassword([]byte(refreshTokenRaw), bcrypt.DefaultCost)
 	if err != nil {
 		log.Error("failed to encrypt refresh token", sl.Err(err))
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err)
