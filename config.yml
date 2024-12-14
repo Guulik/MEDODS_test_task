@@ -5,7 +5,7 @@ auth:
 postgres:
   user: "postgres"
   password: "5379"
-  host: "localhost"
+  host: "postgres"
   port: 7777
   dbname: "auth"
 

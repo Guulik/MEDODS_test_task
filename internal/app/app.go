@@ -37,6 +37,7 @@ func New(ctx context.Context, log *slog.Logger, cfg *configure.Config) *App {
 	}
 
 	jwtSecret := jwtReader.LoadJWTSecret()
+	log.Info("secret:", string(jwtSecret))
 
 	app.storage = repo.New(log, app.dbpool)
 

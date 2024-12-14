@@ -1,18 +1,15 @@
 package jwtReader
 
 import (
-	"bytes"
+	"log"
 	"os"
 )
 
 func LoadJWTSecret() []byte {
-	secretPath := "/run/secrets/jwt_secret"
+	secretPath := "/run/secrets/jwt"
 	secret, err := os.ReadFile(secretPath)
 	if err != nil {
-		//TODO: delete me
-		secret = bytes.NewBufferString("spy").Bytes()
-		//TODO: uncomment me
-		//log.Fatalf("Failed to load JWT secret: %v", err)
+		log.Fatalf("Failed to load JWT secret: %v", err)
 	}
 	return secret
 }

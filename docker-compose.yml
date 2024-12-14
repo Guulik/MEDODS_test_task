@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    hostname: "postgres"
+    ports:
+      - "7777:7777"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 5379
+      POSTGRES_DB: auth
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: -p 7777
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: none
+    networks:
+      auth_network:
+
+  app:
+    image: auth_app
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - "8888:8888"
+    command: /bin/sh -c "./app"
+    secrets:
+      - jwt
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: none
+    networks:
+      auth_network:
+
+volumes:
+  postgres_data:
+
+secrets:
+  jwt:
+    external: true
+
+networks:
+  auth_network:
+    driver: overlay

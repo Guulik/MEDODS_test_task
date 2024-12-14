@@ -37,7 +37,7 @@ func (s *Service) RefreshTokens(ctx context.Context, userID, refreshTokenRaw, ip
 
 	if err = bcrypt.CompareHashAndPassword([]byte(token.TokenHash), []byte(refreshTokenRaw)); err != nil {
 		log.Info("failed to check refresh token", sl.Err(err))
-		return nil, echo.NewHTTPError(http.StatusBadRequest, errors.New("this token been used"))
+		return nil, echo.NewHTTPError(http.StatusBadRequest, errors.New("this token invalid"))
 	}
 
 	// TODO: отправка предупреждения на емейл
