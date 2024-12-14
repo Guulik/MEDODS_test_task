@@ -25,7 +25,6 @@ func (s *Service) RefreshTokens(ctx context.Context, userID, refreshTokenRaw, ip
 		log.Info("user have no refresh tokens", sl.Err(err))
 		return nil, echo.NewHTTPError(http.StatusBadRequest, errors.New("user have no refresh tokens"))
 	}
-
 	if err = s.expired(token); err != nil {
 		log.Info(fmt.Sprintf("token for user %s is expired: ", token.UserGuid))
 
@@ -38,7 +37,7 @@ func (s *Service) RefreshTokens(ctx context.Context, userID, refreshTokenRaw, ip
 
 	if err = bcrypt.CompareHashAndPassword([]byte(token.TokenHash), []byte(refreshTokenRaw)); err != nil {
 		log.Info("failed to check refresh token", sl.Err(err))
-		return nil, echo.NewHTTPError(http.StatusInternalServerError, errors.New("failed to decrypt refresh token"))
+		return nil, echo.NewHTTPError(http.StatusBadRequest, errors.New("this token been used"))
 	}
 
 	// TODO: отправка предупреждения на емейл

@@ -5,6 +5,7 @@ import (
 	sl "MEDODS-test/internal/lib/logger/slog"
 	"MEDODS-test/internal/util/refresher"
 	"context"
+	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
@@ -23,9 +24,19 @@ func (s *Service) GenerateTokens(ctx context.Context, userID, ipAddress string) 
 		accessToken     string
 		refreshTokenRaw string
 		refreshHash     []byte
+		existedToken    *model.RefreshTokenDB
 		expiresAt       time.Time
 		err             error
 	)
+
+	existedToken, err = s.tokenProvider.Get(ctx, userID)
+	if err != nil {
+		log.Info("user have no refresh tokens", sl.Err(err))
+	}
+	if existedToken != nil {
+		log.Warn("user tried to generate multiple pairs")
+		return nil, echo.NewHTTPError(http.StatusBadRequest, errors.New("user already have access token"))
+	}
 
 	accessToken, err = s.generateAccessToken(ipAddress)
 	if err != nil {
