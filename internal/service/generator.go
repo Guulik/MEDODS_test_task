@@ -3,6 +3,7 @@ package service
 import (
 	"MEDODS-test/internal/domain/model"
 	sl "MEDODS-test/internal/lib/logger/slog"
+	"MEDODS-test/internal/util/jwtReader"
 	"context"
 	"encoding/base64"
 	"errors"
@@ -69,12 +70,15 @@ func (s *Service) GenerateTokens(ctx context.Context, userID, ipAddress string) 
 }
 
 func (s *Service) generateAccessToken(ipAddress string) (string, error) {
+	jwtSecret := jwtReader.LoadJWTSecret()
+	//s.log.Debug("secret:", string(jwtSecret))
+
 	claims := jwt.MapClaims{
 		"ip":  ipAddress,
 		"exp": time.Now().Add(s.cfg.Auth.AccessTTL).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
-	return token.SignedString(s.jwtSecret)
+	return token.SignedString(jwtSecret)
 }
 
 func (s *Service) generateRefreshToken() (string, error) {

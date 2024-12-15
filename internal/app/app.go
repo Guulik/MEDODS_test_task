@@ -6,7 +6,6 @@ import (
 	sl "MEDODS-test/internal/lib/logger/slog"
 	"MEDODS-test/internal/repo"
 	"MEDODS-test/internal/service"
-	"MEDODS-test/internal/util/jwtReader"
 	"context"
 	"errors"
 	"fmt"
@@ -36,12 +35,9 @@ func New(ctx context.Context, log *slog.Logger, cfg *configure.Config) *App {
 		panic(err)
 	}
 
-	jwtSecret := jwtReader.LoadJWTSecret()
-	log.Info("secret:", string(jwtSecret))
-
 	app.storage = repo.New(log, app.dbpool)
 
-	app.svc = service.New(jwtSecret, cfg, log, app.storage, app.storage)
+	app.svc = service.New(cfg, log, app.storage, app.storage)
 
 	app.api = api.New(log, *app.svc)
 
