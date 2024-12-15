@@ -4,8 +4,8 @@ import (
 	"MEDODS-test/internal/domain/model"
 	sl "MEDODS-test/internal/lib/logger/slog"
 	"context"
+	"encoding/base64"
 	"errors"
-	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -87,5 +87,5 @@ func (s *Service) generateRefreshToken() (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("%x", b), nil
+	return base64.StdEncoding.EncodeToString(b), nil
 }
