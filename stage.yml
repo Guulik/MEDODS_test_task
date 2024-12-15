@@ -1,0 +1,12 @@
+env: "stage"
+server: "0.0.0.0:8888"
+auth:
+  accessTTL: 5m
+  refreshTTL: 100m
+postgres:
+  user: "postgres"
+  password: "5379"
+  host: "postgres"
+  port: 7777
+  dbname: "auth"
+

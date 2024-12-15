@@ -70,7 +70,7 @@ func (s *Service) GenerateTokens(ctx context.Context, userID, ipAddress string) 
 }
 
 func (s *Service) generateAccessToken(ipAddress string) (string, error) {
-	jwtSecret := jwtReader.LoadJWTSecret()
+	jwtSecret := jwtReader.LoadJWTSecret(s.cfg.Env)
 	//s.log.Debug("secret:", string(jwtSecret))
 
 	claims := jwt.MapClaims{

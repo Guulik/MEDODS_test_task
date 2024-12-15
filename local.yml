@@ -1,3 +1,4 @@
+env: "local"
 server: "0.0.0.0:8888"
 auth:
   accessTTL: 5m
@@ -5,7 +6,7 @@ auth:
 postgres:
   user: "postgres"
   password: "5379"
-  host: "postgres"
+  host: "localhost"
   port: 7777
   dbname: "auth"
 

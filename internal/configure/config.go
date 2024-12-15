@@ -6,12 +6,8 @@ import (
 	"time"
 )
 
-// не хочу заморачиваться со считыванием из env
-var (
-	configPath = "./config.yml"
-)
-
 type Config struct {
+	Env      string   `yaml:"env"`
 	Server   string   `yaml:"server"`
 	Auth     Auth     `yaml:"auth"`
 	Postgres Postgres `yaml:"postgres"`
@@ -30,6 +26,8 @@ func New() *Config {
 }
 
 func MustConfig() *Config {
+	configPath := fetchConfigPath()
+
 	if _, ok := os.Stat(configPath); os.IsNotExist(ok) {
 		panic("Config file does not exist: " + configPath)
 	}
@@ -41,4 +39,14 @@ func MustConfig() *Config {
 	}
 
 	return cfg
+}
+
+func fetchConfigPath() string {
+	const key = "CONFIG_PATH"
+
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+
+	return "./local.yml"
 }

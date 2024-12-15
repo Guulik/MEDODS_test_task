@@ -22,6 +22,8 @@ services:
   app:
     image: auth_app
     build: .
+    environment:
+      CONFIG_PATH: ./stage.yml
     depends_on:
       - postgres
     ports:
