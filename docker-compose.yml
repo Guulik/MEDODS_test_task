@@ -36,7 +36,7 @@ services:
     image: auth_app
     build: .
     environment:
-      CONFIG_PATH: ./stage.yml
+      CONFIG_PATH: ./internal/configure/stage.yml
     depends_on:
       - postgres
       - mailhog

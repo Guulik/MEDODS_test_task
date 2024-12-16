@@ -54,5 +54,5 @@ func fetchConfigPath() string {
 		return v
 	}
 
-	return "./local.yml"
+	return "./internal/configure/local.yml"
 }
