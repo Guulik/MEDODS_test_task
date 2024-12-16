@@ -19,6 +19,19 @@ services:
     networks:
       auth_network:
 
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: none
+    networks:
+      auth_network:
+
   app:
     image: auth_app
     build: .
@@ -26,6 +39,7 @@ services:
       CONFIG_PATH: ./stage.yml
     depends_on:
       - postgres
+      - mailhog
     ports:
       - "8888:8888"
     command: /bin/sh -c "./app"

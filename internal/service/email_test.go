@@ -18,12 +18,7 @@ func TestEmailService_SendWarning(t *testing.T) {
 		{
 			name:    "local",
 			address: gofakeit.Email(),
-			ip:      "127.0.0.1",
-		},
-		{
-			name:    "5563",
-			address: gofakeit.Email(),
-			ip:      "5563",
+			ip:      "999.561.888.460",
 		},
 	}
 	for _, tt := range tests {

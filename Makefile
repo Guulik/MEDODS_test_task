@@ -8,16 +8,20 @@ run: .create-secret .build .deploy
 stop:
 	docker stack rm auth
 
-# смотри readme
 .create-secret: # AHTUNG! так нельзя делать. но для упрощения проверки тестового можно :D
-	@if ! docker secret ls | grep -q jwt; then \
-		echo "Creating JWT secret..."; \
-		echo "SPY" > ./jwt_secret.txt; \
-		docker secret create jwt ./jwt_secret.txt; \
-		rm ./jwt_secret.txt; \
-	else \
-		echo "JWT secret already exists."; \
-	fi
+		@if not exist jwt_secret.txt ( \
+    		echo Checking if JWT secret exists in Docker... & \
+    		docker secret ls | findstr jwt > nul && ( \
+    			echo JWT secret already exists. \
+    		) || ( \
+    			echo Creating JWT secret... & \
+    			echo SPY > jwt_secret.txt & \
+    			docker secret create jwt jwt_secret.txt & \
+    			del jwt_secret.txt \
+    		) \
+    	) else ( \
+    		echo JWT secret file already exists locally. \
+    	)
 
 .build:
 	docker build -t auth_app .
