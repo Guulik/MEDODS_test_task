@@ -3,7 +3,7 @@
 lint:
 	golangci-lint run -c .golangci.yaml
 
-run: .create-secret .build .deploy
+run: .create-secret .build .test .deploy
 
 stop:
 	docker stack rm auth
@@ -25,6 +25,9 @@ stop:
 
 .build:
 	docker build -t auth_app .
+
+.test:
+	go test ./...
 
 .deploy:
 	docker stack deploy -c docker-compose.yml auth
