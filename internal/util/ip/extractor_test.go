@@ -1,4 +1,4 @@
-package ipExtracter
+package ip
 
 import (
 	"github.com/stretchr/testify/require"

@@ -22,9 +22,10 @@ func TestService_generateRefreshToken(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &Service{
+			s := &TokenService{
 				cfg:           nil,
 				log:           nil,
+				emailNotifier: nil,
 				tokenModifier: nil,
 				tokenProvider: nil,
 			}

@@ -11,11 +11,17 @@ type Config struct {
 	Server   string   `yaml:"server"`
 	Auth     Auth     `yaml:"auth"`
 	Postgres Postgres `yaml:"postgres"`
+	SMTP     SMTP     `yaml:"smtp"`
 }
 
 type Auth struct {
 	AccessTTL  time.Duration `yaml:"accessTTL"`
 	RefreshTTL time.Duration `yaml:"refreshTTL"`
+}
+
+type SMTP struct {
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
 }
 
 func New() *Config {

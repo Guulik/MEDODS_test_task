@@ -6,7 +6,7 @@ import (
 	sl "MEDODS-test/internal/lib/logger/slog"
 	"MEDODS-test/internal/service"
 	"MEDODS-test/internal/util/binder"
-	"MEDODS-test/internal/util/ipExtracter"
+	"MEDODS-test/internal/util/ip"
 	goContext "context"
 	"errors"
 	"github.com/labstack/echo/v4"
@@ -16,12 +16,12 @@ import (
 
 type Api struct {
 	log *slog.Logger
-	svc service.Service
+	svc *service.Service
 }
 
 func New(
 	log *slog.Logger,
-	service service.Service,
+	service *service.Service,
 ) *Api {
 	return &Api{
 		log: log,
@@ -33,7 +33,7 @@ func (a *Api) GetTokens(ctx echo.Context) error {
 	log := a.log.With(
 		slog.String("op", "Api.GetTokens"),
 	)
-	userIp := ipExtracter.GetIPAddress(ctx.Request())
+	userIp := ip.GetIPAddress(ctx.Request())
 	if userIp == "" {
 		return echo.NewHTTPError(http.StatusInternalServerError, errors.New("failed to extract IP"))
 	}
@@ -50,7 +50,7 @@ func (a *Api) GetTokens(ctx echo.Context) error {
 	}
 	log.Info(sl.Req(req))
 
-	tokenPair, err = a.svc.GenerateTokens(context, req.UserGUID, userIp)
+	tokenPair, err = a.svc.Tokens.GenerateTokens(context, req.UserGUID, userIp)
 	if err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func (a *Api) RefreshTokens(ctx echo.Context) error {
 	log := a.log.With(
 		slog.String("op", "Api.RefreshTokens"),
 	)
-	userIp := ipExtracter.GetIPAddress(ctx.Request())
+	userIp := ip.GetIPAddress(ctx.Request())
 	if userIp == "" {
 		return echo.NewHTTPError(http.StatusInternalServerError, errors.New("failed to extract IP"))
 	}
@@ -78,7 +78,7 @@ func (a *Api) RefreshTokens(ctx echo.Context) error {
 	}
 	log.Info(sl.Req(req))
 
-	tokenPair, err = a.svc.RefreshTokens(context, req.UserGUID, req.RefreshToken, userIp)
+	tokenPair, err = a.svc.Tokens.RefreshTokens(context, req.UserGUID, req.RefreshToken, userIp)
 	if err != nil {
 		return err
 	}
