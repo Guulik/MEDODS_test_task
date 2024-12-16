@@ -8,6 +8,7 @@ import (
 	"MEDODS-test/internal/util/binder"
 	"MEDODS-test/internal/util/ipExtracter"
 	goContext "context"
+	"errors"
 	"github.com/labstack/echo/v4"
 	"log/slog"
 	"net/http"
@@ -33,6 +34,9 @@ func (a *Api) GetTokens(ctx echo.Context) error {
 		slog.String("op", "Api.GetTokens"),
 	)
 	userIp := ipExtracter.GetIPAddress(ctx.Request())
+	if userIp == "" {
+		return echo.NewHTTPError(http.StatusInternalServerError, errors.New("failed to extract IP"))
+	}
 	var (
 		req       request.GetTokensRequest
 		tokenPair *model.TokenPair
@@ -58,6 +62,9 @@ func (a *Api) RefreshTokens(ctx echo.Context) error {
 		slog.String("op", "Api.RefreshTokens"),
 	)
 	userIp := ipExtracter.GetIPAddress(ctx.Request())
+	if userIp == "" {
+		return echo.NewHTTPError(http.StatusInternalServerError, errors.New("failed to extract IP"))
+	}
 	var (
 		req       request.RefreshTokensRequest
 		tokenPair *model.TokenPair
