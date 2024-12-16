@@ -3,11 +3,14 @@ module MEDODS-test
 go 1.23.4
 
 require (
+	github.com/brianvoe/gofakeit v3.18.0+incompatible
+	github.com/go-gomail/gomail v0.0.0-20160411212932-81ebce5c23df
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/golang-migrate/migrate/v4 v4.18.1
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jackc/pgx/v4 v4.18.3
 	github.com/labstack/echo/v4 v4.13.2
+	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/crypto v0.31.0
 )
@@ -39,7 +42,9 @@ require (
 	golang.org/x/net v0.32.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
 )

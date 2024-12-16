@@ -1,4 +1,4 @@
-package ipExtracter
+package ip
 
 import (
 	"net"

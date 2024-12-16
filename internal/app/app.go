@@ -37,9 +37,15 @@ func New(ctx context.Context, log *slog.Logger, cfg *configure.Config) *App {
 
 	app.storage = repo.New(log, app.dbpool)
 
-	app.svc = service.New(cfg, log, app.storage, app.storage)
+	emailService, err := service.NewEmailService(cfg, log)
+	if err != nil {
+		log.Error("email notifier is not available", sl.Err(err))
+	}
+	tokenService := service.NewTokenService(cfg, log, emailService, app.storage, app.storage)
 
-	app.api = api.New(log, *app.svc)
+	app.svc = service.New(tokenService, emailService)
+
+	app.api = api.New(log, app.svc)
 
 	app.echo.GET("/api/auth/generate", app.api.GetTokens)
 	app.echo.GET("/api/auth/refresh", app.api.RefreshTokens)
@@ -65,9 +71,10 @@ func (a *App) MustRun() {
 }
 
 func (a *App) Stop(ctx context.Context) error {
-	fmt.Println("stopping server..." + " op = app.Stop")
+	fmt.Println("stopping server...")
 
 	defer a.dbpool.Close()
+
 	if err := a.echo.Shutdown(ctx); err != nil {
 		fmt.Println("failed to shutdown server")
 		return err
