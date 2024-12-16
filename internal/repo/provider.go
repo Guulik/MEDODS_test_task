@@ -5,7 +5,7 @@ import (
 	"context"
 )
 
-func (r *Storage) Get(ctx context.Context, userID string) (*model.RefreshTokenDB, error) {
+func (r *PostgresStorage) Get(ctx context.Context, userID string) (*model.RefreshTokenDB, error) {
 	var token model.RefreshTokenDB
 	token.UserGuid = userID
 

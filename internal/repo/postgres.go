@@ -5,7 +5,7 @@ import (
 	"log/slog"
 )
 
-type Storage struct {
+type PostgresStorage struct {
 	log  *slog.Logger
 	pool *pgxpool.Pool
 }
@@ -13,8 +13,8 @@ type Storage struct {
 func New(
 	log *slog.Logger,
 	pool *pgxpool.Pool,
-) *Storage {
-	return &Storage{
+) *PostgresStorage {
+	return &PostgresStorage{
 		log:  log,
 		pool: pool,
 	}

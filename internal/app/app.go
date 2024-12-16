@@ -18,7 +18,7 @@ import (
 type App struct {
 	api     *api.Api
 	svc     *service.Service
-	storage *repo.Storage
+	storage *repo.PostgresStorage
 	echo    *echo.Echo
 	dbpool  *pgxpool.Pool
 }
