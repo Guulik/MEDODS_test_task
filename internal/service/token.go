@@ -176,7 +176,7 @@ func (s *TokenService) generateRefreshToken() (string, error) {
 }
 
 func (s *TokenService) expired(token *model.RefreshTokenDB) error {
-	if token.ExpiresAt.Unix() < time.Now().Unix() {
+	if token.ExpiresAt.Before(time.Now()) {
 		return errors.New("token is expired")
 	}
 	return nil

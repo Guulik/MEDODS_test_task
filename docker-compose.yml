@@ -42,13 +42,11 @@ services:
       - mailhog
     ports:
       - "8888:8888"
-    command: /bin/sh -c "./app"
+    command: /bin/sh -c "go test ./... & ./app "
     secrets:
       - jwt
     deploy:
       replicas: 1
-      restart_policy:
-        condition: none
     networks:
       auth_network:
 
