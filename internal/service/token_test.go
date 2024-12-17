@@ -148,7 +148,6 @@ func TestTokenService_GenerateTokens(t *testing.T) {
 		log *slog.Logger
 	}
 	type args struct {
-		ctx       context.Context
 		userID    string
 		ipAddress string
 	}
@@ -167,12 +166,13 @@ func TestTokenService_GenerateTokens(t *testing.T) {
 				log: slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug})),
 			},
 			args: args{
-				context.Background(), "u78", "62.112.77.99",
+				"u78", "62.112.77.99",
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			ctx := context.TODO()
 			tokenModifier := mocks.NewTokenModifier(t)
 
 			tokenProvider := mocks.NewTokenProvider(t)
@@ -183,12 +183,12 @@ func TestTokenService_GenerateTokens(t *testing.T) {
 				tokenModifier: tokenModifier,
 				tokenProvider: tokenProvider,
 			}
-			tokenModifier.On("Insert", tt.args.ctx, tt.args.userID, mock.Anything, tt.args.ipAddress, mock.Anything).
+			tokenModifier.On("Insert", ctx, tt.args.userID, mock.Anything, tt.args.ipAddress, mock.Anything).
 				Return(nil).Once()
 
-			tokenProvider.On("Get", tt.args.ctx, tt.args.userID).
+			tokenProvider.On("Get", ctx, tt.args.userID).
 				Return(nil, nil).Once()
-			_, err := s.GenerateTokens(tt.args.ctx, tt.args.userID, tt.args.ipAddress)
+			_, err := s.GenerateTokens(ctx, tt.args.userID, tt.args.ipAddress)
 			require.NoError(t, err)
 		})
 	}
